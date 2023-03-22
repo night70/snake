@@ -1,0 +1,15 @@
+body{
+    background-color: #ffee9f;
+}
+#flex-container{
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+}
+#playingField{
+    border: 5px groove brown;
+    width: 800px;
+    height: 450px;
+    background-color: #b0ff9f;
+}
