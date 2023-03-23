@@ -22,7 +22,7 @@ export default class Snake{
         //here is get two random x = 10 to 290 and y =10 to 140
         let x = (Math.floor(Math.random()*280)) + 10;
         let y = (Math.floor(Math.random()*130 )) + 10;
-        player.setLocation(x,y);
+        this.setLocation(x,y);
         this.drawTheHead();
     }
     set length(value){
@@ -46,19 +46,19 @@ export default class Snake{
         return this.#snakeLocation;
     }
     moveLeft(){
-        this.setLocation(this.getLocation().x - 5,this.getLocation().y);
+        this.setLocation(this.getLocation().x - 20,this.getLocation().y);
         this.drawTheHead();
     }
     moveUp(){
-        this.setLocation(this.getLocation().x,this.getLocation().y - 5);
+        this.setLocation(this.getLocation().x,this.getLocation().y - 20);
         this.drawTheHead();
     }
     moveRight(){
-        this.setLocation(this.getLocation().x + 5,this.getLocation().y);
+        this.setLocation(this.getLocation().x + 20,this.getLocation().y);
         this.drawTheHead();
     }
     moveDown(){
-        this.setLocation(this.getLocation().x,this.getLocation().y + 5);
+        this.setLocation(this.getLocation().x,this.getLocation().y + 20);
         this.drawTheHead();
     }
     move(dir){
