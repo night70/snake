@@ -26,7 +26,6 @@ export default class Snake{
         this.setLocation(x,y);
     }
     start(){
-        //here is get two random x = 10 to 290 and y =10 to 140
         this.randomLocation();
         this.drawTheHead();
     }
@@ -66,7 +65,7 @@ export default class Snake{
     }
     move(dir){
         
-        if(1){
+        if(this.checkWallCollide() && this.checkSnakeCollide()){
             switch (dir) {
                 case "ArrowLeft":
                     this.moveLeft();
@@ -87,14 +86,23 @@ export default class Snake{
         }
         
     }
-    checkCollide(){
-        let x = this.getLocation()[0][0];
-        let y = this.getLocation()[0][1];
-        if((x>1 && x < 14) && (y>1 && y<7.5)){
+    checkWallCollide(){
+        let x = this.getLocation(0)[0];
+        let y = this.getLocation(0)[1];
+        if((x>0 && x < 15) && (y>0 && y<8)){
             return true;
         } 
         else return false;
-
+    }
+    checkSnakeCollide(){
+        let x = this.getLocation(0)[0];
+        let y = this.getLocation(0)[1];
+        for (let i = 1; i < this.length; i++) {
+            if (x == this.getLocation(i)[0] && y == this.getLocation(i)[1]) {
+                return false;
+            }            
+        }
+        return true;
     }
 }
 class Food extends Snake{
@@ -162,7 +170,7 @@ document.addEventListener("keydown",(e)=>{
             clearInterval(interval);
         }
         if(checkDirectionConflict()){
-            interval = setInterval(()=>{player.move(arrowkey);food.drawFood(arrowkey);},500);
+            interval = setInterval(()=>{player.move(arrowkey);food.drawFood(arrowkey);},300);
         }
         else{
             interval = setInterval(()=>{player.move(oldDirection);food.drawFood(oldDirection);},500)
