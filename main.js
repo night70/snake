@@ -1,27 +1,28 @@
 export default class Snake{
-    #snakeLength = 0;
+    #snakeLength = 1;
     #snakeSpeed;
     #snakeColor = "black";
     #direction = null;
-    #snakeLocation = {x:null,y:null}
+    #snakeLocation = [];
     constructor(){}
     drawTheHead(){
-        let x = this.getLocation().x;
-        let y = this.getLocation().y;
-        // canvas = document.getElementById("playingField");
-        // console.log(canvas.height);
         let ctx = canvas.getContext("2d");
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = "blue";
-        ctx.beginPath();
-        ctx.arc(x * 20,y * 20, 10, 0, 2*Math.PI);
-        ctx.fill();  
-        ctx.stroke();
-        // console.log(this.length);
+
+        for (let index = 0; index < this.length; index++) {
+            let x = this.getLocation(index)[0];
+            let y = this.getLocation(index)[1];
+            ctx.fillStyle = "blue";
+            ctx.beginPath();
+            ctx.arc(x * 20,y * 20, 10, 0, 2*Math.PI);
+            ctx.fill();  
+            ctx.stroke();            
+        }
+
     }
     randomLocation(){
         let x = (Math.floor(Math.random()*allWidthUnit)) + .5;
-        let y = (Math.floor(Math.random()*(allHeightUnit-1 ))) + 1.5;
+        let y = (Math.floor(Math.random()*(allHeightUnit ))) + 1.5;
         this.setLocation(x,y);
     }
     start(){
@@ -42,31 +43,29 @@ export default class Snake{
         return this.#direction;
     }
     setLocation(xinput,yinput){
-        this.#snakeLocation.x = xinput;
-        this.#snakeLocation.y = yinput;
-
+        this.#snakeLocation.unshift([xinput,yinput]);
     }
-    getLocation(){
-        return this.#snakeLocation;
+    getLocation(index){
+        return this.#snakeLocation[index];
     }
     moveLeft(){
-        this.setLocation(this.getLocation().x - 1,this.getLocation().y);
+        this.setLocation(this.getLocation(0)[0] - 1,this.getLocation(0)[1]);
         this.drawTheHead();
     }
     moveUp(){
-        this.setLocation(this.getLocation().x,this.getLocation().y - 1);
+        this.setLocation(this.getLocation(0)[0],this.getLocation(0)[1] - 1);
         this.drawTheHead();
     }
     moveRight(){
-        this.setLocation(this.getLocation().x + 1,this.getLocation().y);
+        this.setLocation(this.getLocation(0)[0] + 1,this.getLocation(0)[1]);
         this.drawTheHead();
     }
     moveDown(){
-        this.setLocation(this.getLocation().x,this.getLocation().y + 1);
+        this.setLocation(this.getLocation(0)[0],this.getLocation(0)[1] + 1);
         this.drawTheHead();
     }
     move(dir){
-        console.log("in move : " +checkDirectionConflict());
+        
         if(1){
             switch (dir) {
                 case "ArrowLeft":
@@ -87,6 +86,15 @@ export default class Snake{
             }
         }
         
+    }
+    checkCollide(){
+        let x = this.getLocation()[0][0];
+        let y = this.getLocation()[0][1];
+        if((x>1 && x < 14) && (y>1 && y<7.5)){
+            return true;
+        } 
+        else return false;
+
     }
 }
 class Food extends Snake{
@@ -166,9 +174,9 @@ document.addEventListener("keydown",(e)=>{
 });
 if(arrowkey!=" "){
     setInterval(()=>{
-        let snakeLoc = player.getLocation();
+        let snakeLoc = player.getLocation(0);
         let foodLoc = food.getFoodLocation();
-        if(snakeLoc.x == foodLoc[0] && snakeLoc.y == foodLoc[1]){
+        if(snakeLoc[0] == foodLoc[0] && snakeLoc[1] == foodLoc[1]){
             food.randomLocation();
             player.addLength();
         }
